@@ -4,9 +4,14 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
+import requests
+import time
+
 service = ChromeService(executable_path=ChromeDriverManager().install())
 
-driver = webdriver.Chrome(service=service)
+options = webdriver.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = webdriver.Chrome(options=options)
 
 driver.get("https://gamepay.sg")
 
@@ -55,5 +60,46 @@ try:
     print("User  loggedin")
 except: 
     print("User not loggedin")
+
+    #.rounded-circle:nth-child(1) > a
+    #get all links
+# all_links = driver.find_elements(By.CSS_SELECTOR,"a")
+# print("the list")
+# print(all_links)
+driver.get("https://gamepay.sg")
+time.sleep(5)
+height = int(driver.execute_script("return document.documentElement.scrollHeight"))
+while True:
+    driver.execute_script('window.scrollBy(0,10)')
+    time.sleep(0.10)
+    totalScrolledHeight = driver.execute_script("return window.pageYOffset + window.innerHeight")
+    if totalScrolledHeight >= height:
+        driver.switch_to.window(driver.window_handles[0])
+        break
+print('***Web Page Visited***')
+
+
+
+elems = driver.find_elements(By.TAG_NAME,"a")
+print(len(elems))
+for elem in elems:
+  try:
+    print(elem.get_attribute("href"))
+  except:
+    print("exception at: " + str(elem.text))
+
+#check each link if it is broken or not
+for link in elems:
+    #extract url from href attribute
+    if link.get_attribute('href') is not None:
+      url = link.get_attribute('href')
+    #print("printing")
+    #print(link)
+      #send request to the url and get the result
+      result = requests.head(url)
+      print(url.title)
+      #if status code is not 200 then print the url (customize the if condition according to the need)
+      if result.status_code != 200:
+        print(url, result.status_code)
+
 driver.quit()
-  

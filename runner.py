@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 
 import requests
 import time
+from common.settings import *
 
 from common.colors import bcolors
 
@@ -86,11 +87,14 @@ def login_with_test_id(web_url,username,passwd):
   driver.find_element(By.CSS_SELECTOR, ".call-to-action:nth-child(4) > .fill-btn").click()
   driver.implicitly_wait(10000)
   try:
-      assert driver.find_element(By.XPATH,"//*[@id=\"_menustyle_header__DI6Np\"]/div[2]/div[2]/div/div[3]/div/div[2]").text == "Rahulrastogi61"
+      user = driver.find_element(By.CSS_SELECTOR,"#_menustyle_header__DI6Np > div._menustyle_menu_group__P1YTs > div:nth-child(2) > div > div._menustyle_userprofile__TkNC2 > div > div._menustyle_user_name__o9IMK").text
+      print ("Username: "+ user)
+      assert user == "Rahulrastogi61"
       print(bcolors.OKGREEN + 'Login Success: 'f' {username}'  + bcolors.ENDC)
-
   except: 
       print(bcolors.FAIL + 'Failed to login with USER: 'f' {username}'  + bcolors.ENDC)
+  
+
 
 def check_all_hyperlinks(url):
   print(bcolors.OKBLUE + 'Checking URL: +'f' {url}' + bcolors.ENDC)
@@ -105,18 +109,19 @@ def check_all_hyperlinks(url):
         url = link.get_attribute('href')
         if not url.startswith("mailto:"):
           result = requests.head(url)
-          print(bcolors.OKGREEN + 'Success: +'f' {url}' + bcolors.ENDC)
         #if status code is not 200 then print the url (customize the if condition according to the need)
         if result.status_code != 200:
           print(bcolors.FAIL + 'Failed: 'f' {url}' +'| Status code: '+ f'{result.status_code}' + bcolors.ENDC)
+        else:
+          print(bcolors.OKGREEN + 'Success: +'f' {url}' + bcolors.ENDC)
       except:
         print("Link not reachable " + str(link.title))
 
 
 if __name__ == '__main__':
+  load_env()
   init_service()
   printBanner()
   title_check("https://gamepay.sg","Gamepay - Play To Earn NFT - Exclusive NFT Marketplace")
-  
-  login_with_test_id("https://gamepay.sg",os.environ.get("TEST_USER"),os.environ.get("TEST_USER_PASS"))
+  login_with_test_id("https://gamepay.sg",getTestUsername(),getTestPassword())
   check_all_hyperlinks("https://gamepay.sg")

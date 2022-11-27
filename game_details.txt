@@ -1,11 +1,3 @@
-https://gamepay.sg/
-https://gamepay.sg/gamelisting
-https://gamepay.sg/allgames
-https://gamepay.sg/Games/submitgame
-https://gamepay.sg/Nfts
-https://gamepay.sg/Login
-https://gamepay.sg/Register
-https://gamepay.sg/Teamsofus
 https://gamepay.sg/gamedetails/THE_SANDBOX
 https://gamepay.sg/gamedetails/DECENTRALAND
 https://gamepay.sg/gamedetails/AXIE_INFINITY

@@ -1,2 +1,0 @@
-gamepay login :::: https://gamepay.sg/Login
-game distribution web3 :::: https://gamepay.sg
